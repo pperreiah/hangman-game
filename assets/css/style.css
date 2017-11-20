@@ -1,1 +1,30 @@
 //*Hangman Game Style*/
+
+  body {
+    background: url(./assets/images/mainBackground.jpg) no-repeat;
+  }
+
+
+.home {
+    background-image: url('./assets/images/mainBackground.jpg');
+    background-repeat: no-repeat, no-repeat;
+    background-size: 50% 100%;
+    background-position: center, bottom;
+}
+
+.img-1{
+	align-self: center;
+	width: 350px;
+	height: 400px;
+
+}
+
+.jummbotron {
+
+	height: 100px;
+}
+
+.playPanel {
+
+	padding: 10em;
+}

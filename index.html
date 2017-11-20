@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+
+<head>
+	<title>*******************Hangman Game******************</title>
+	
+
+	<script> src = "./assets/javascript/game.js"</script>
+
+
+	<!-- Added a link to Bootstrap-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+	<!-- Optional theme -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+
+    <!-- Added link to the jQuery Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+	<style>
+
+		<link rel="stylesheet" href="./assets/CSS/reset.css">
+	   	<link rel="stylesheet" href="./assets/CSS/style.css">
+
+	</style>
+
+</head>
+
+
+
+
+<body>
+
+<!-- Jumbotron for Title -->
+<div class="jumbotron">
+    <h1 class="text-center">THE HANGMAN GAME: DEATH BY FLOWERS</h1>
+
+</div>
+
+<div class="container">
+
+    <div class="row">
+
+        <!-- Calculator Panel -->
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h2 class="panel-title">Correct Flower:</h2>
+                </div>
+
+                <div class="panel-body">
+                   	
+                   	<img class="img-1" class="img-fluid" src="./assets/images/skullFlower.jpg" class="rounded" alt="Death Flower Image Here" width="350" height="400" align-self="center">
+                   	
+                    
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Game Panel -->
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h1 id="gamePanelTitle" class="panel-title">Press any key to get started!</h1>
+                </div>
+                <div class="panel-body">
+					<div class="row">
+						<h2 id="currentWordHeader">Current Word:</h2>
+						<h2 id="currentWord"> Current Word Displayed Here</h2>
+						<br>
+						<h2 id="guessedLetters">Current guessed letters here</h2>
+						<h2 id="guessesRemaining">Guesses remaining:</h2>
+						<h2 id="winCount">Wins:</h2>
+
+					</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>	
+
+	<script type="text/javascript">
+
+		var gamePanelTitle = "Press any key to get started.";
+		var currentWordHeader = "";
+		var currentWord = "";
+		var guessedLetters = "";
+		var guessesRemaining ="";
+		var winCount = "";
+		var flowerName = "";
+		var randomIndex = -1;
+		var nameLength = 0;
+		
+		var flowerArray[flowerName];
+			flowerrArray[1] === "ageratum";
+			flowerrArray[2] === "amaranth";
+			flowerrArray[3] === "amaryllis";
+			flowerrArray[4] === "anemomes";
+			flowerrArray[5] === "astrantia";
+			flowerrArray[6] === "callalily";
+			flowerrArray[7] === "carnation";
+			flowerrArray[8] === "chrysanthemum";
+			flowerrArray[9] === "columbine";
+			flowerrArray[10] === "cornflower";
+			flowerrArray[11] === "daffodil";
+			flowerrArray[12] === "foxglove";
+			flowerrArray[13] === "gerberdaisy";
+			flowerrArray[14] === "gladiolus";
+			flowerrArray[15] === "goldenrod";
+			flowerrArray[16] === "hyacinth";
+			flowerrArray[17] === "laceleaf";
+			flowerrArray[18] === "lilac";
+			flowerrArray[19] === "peony";
+			flowerrArray[20] === "snapdragon";
+			flowerrArray[21] === "sunflower";
+			flowerrArray[22] === "tulip";
+
+
+
+
+		$(document).ready(function(){
+
+			$("input").keyup(function(){
+
+				//Generate random flower name
+				randomIndex = Math.floor(Math.random())*23;
+				flowerName = flowerArray[randomIndex]
+
+				//Update Game Panel
+				gamePanelTitle = "Game On!";
+				currentWordHeader = "Current Word:";
+				currentWord = flowerName;
+				guessedLetters = "";
+				guessesRemaining ="";
+				winCount = "";
+			});
+						}
+
+
+
+
+
+		//choose a theme
+		//USE KEY EVENTS FOR LETTERS THE PLYAERS WILL TYPE
+			//USE ON KEYUP EVET LISTENING
+		//PRESS ANY KEY TO GET STARTED
+		//LOG YOUR WINS. NUMBER OF TIME USER GETS THE WORD CORRECTLY
+			//VAR numWins =  0;
+			//numWins++
+
+
+
+	</script>
+
+</body>
+</html>
