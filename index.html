@@ -63,16 +63,16 @@
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h1 id="gamePanelTitle" class="panel-title">Press any key to get started!</h1>
+                    <h1 id="gamePanelTitle" class="panel-title"></h1>
                 </div>
                 <div class="panel-body">
 					<div class="row">
-						<h2 id="currentWordHeader">Current Word:</h2>
-						<h2 id="currentWord"> Current Word Displayed Here</h2>
+						<h2 id="currentWordHeader"></h2>
+						<h2 id="currentWord"></h2>
 						<br>
-						<h2 id="guessedLetters">Current guessed letters here</h2>
-						<h2 id="guessesRemaining">Guesses remaining:</h2>
-						<h2 id="winCount">Wins:</h2>
+						<h2 id="guessedLetters"></h2>
+						<h2 id="guessesRemaining"></h2>
+						<h2 id="winCount"></h2>
 
 					</div>
                 </div>
@@ -85,60 +85,91 @@
 
 	<script type="text/javascript">
 
-		var gamePanelTitle = "Press any key to get started.";
+		var gamePanelTitle = "";
 		var currentWordHeader = "";
 		var currentWord = "";
+		var currentLettersGuessed = "";
 		var guessedLetters = "";
 		var guessesRemaining ="";
-		var winCount = "";
+		var winCount = 0;
 		var flowerName = "";
-		var randomIndex = -1;
+		var randomIndex = 5;
 		var nameLength = 0;
+
+		var flowerArray = ["ageratum","amaranth","amaryllis","anemomes","astrantia","callalily","carnation","chrysanthemum","columbine","cornflower","daffodil","foxglove","gerberdaisy","gladiolus","goldenrod","hyacinth","laceleaf","lilac","peony","snapdragon","sunflower","tulip"];
+
+			//for(var i=0; i<22; i++) {
+			//	console.log(flowerArray[i]);
+			//}
+		var currentWordArray = new Array(13);
+		var currentGuessArray = new Array(13);
+		var lettersGuessedArray = new Array(11);
+		var e;
+
+		//Initialize game panel
+
+			$("#gamePanelTitle").text("Press any key to get started!");
+			
+			$("#currentWordHeader").text("");
+			
+			$("#guessedLetters").text("");
+			
+			$("#guessesRemaining").text("");
+
+			$("#winCount").text("");
+
+
+
+		//$(document).ready(function(){
+
+			//$("input").keyup(function(){
+				$('body').keyup(function(e){
+				  console.log('keyup', String.fromCharCode( e.which ));
+				});
+
+			//Start game on any keystroke
+				if(e !== null)	{
+					
+					//Set up game:
+
+					//Generate random flower name
+					randomIndex = Math.floor(22*Math.random());
+					//console.log(randomIndex);
+					flowerName = flowerArray[randomIndex];
+					//console.log(flowerName);
+					nameLength = flowerName.length;
+					//console.log(nameLength);
+
+					//initialize guesses remaining as nameLength -2
+					guessesRemaining = nameLength - 2;
+
+					//load currentWordArray with flowerName
+					for(i=0; i<nameLength; i++){
+						currentWordArray[i] = flowerName.charAt(i);
+						console.log(currentWordArray[i]);
+					}
+
+					//Initialize currentGuessArray
+					for(i=0; i<nameLength; i++){
+						currentGuessArray[i] = "_";
+						//console.log(currentGuessArray[i]);
+						currentLettersGuessed = currentLettersGuessed + " " +currentGuessArray[i];	
+					}				
+					console.log(currentLettersGuessed);
+
+					//Update Game Panel
+					$("#gamePanelTitle").text("Game On!  Type a letter to guess.");
+					
+					$("#currentWordHeader").text("Current Word:");
+					
+					$("#guessedLetters").text(currentLettersGuessed);
+					
+					$("#guessesRemaining").text("Guesses Remaining = " + guessesRemaining);
+
+					$("#winCount").text("Win Count = " + winCount);
+				}	
+			//});
 		
-		var flowerArray[flowerName];
-			flowerrArray[1] === "ageratum";
-			flowerrArray[2] === "amaranth";
-			flowerrArray[3] === "amaryllis";
-			flowerrArray[4] === "anemomes";
-			flowerrArray[5] === "astrantia";
-			flowerrArray[6] === "callalily";
-			flowerrArray[7] === "carnation";
-			flowerrArray[8] === "chrysanthemum";
-			flowerrArray[9] === "columbine";
-			flowerrArray[10] === "cornflower";
-			flowerrArray[11] === "daffodil";
-			flowerrArray[12] === "foxglove";
-			flowerrArray[13] === "gerberdaisy";
-			flowerrArray[14] === "gladiolus";
-			flowerrArray[15] === "goldenrod";
-			flowerrArray[16] === "hyacinth";
-			flowerrArray[17] === "laceleaf";
-			flowerrArray[18] === "lilac";
-			flowerrArray[19] === "peony";
-			flowerrArray[20] === "snapdragon";
-			flowerrArray[21] === "sunflower";
-			flowerrArray[22] === "tulip";
-
-
-
-
-		$(document).ready(function(){
-
-			$("input").keyup(function(){
-
-				//Generate random flower name
-				randomIndex = Math.floor(Math.random())*23;
-				flowerName = flowerArray[randomIndex]
-
-				//Update Game Panel
-				gamePanelTitle = "Game On!";
-				currentWordHeader = "Current Word:";
-				currentWord = flowerName;
-				guessedLetters = "";
-				guessesRemaining ="";
-				winCount = "";
-			});
-						}
 
 
 
