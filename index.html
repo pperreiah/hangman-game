@@ -57,9 +57,8 @@
                 </div>
                 <div class="panel-body gamePanel">
 					<div class="row">
-						<h2 id="currentWordHeader"></h2>
+						<h2 id="currentWordHeader"><br></h2>
 						<h2 id="currentWord"></h2>
-						<br>
 						<h2 id="guessedLetters"></h2>
 						<h2 id="guessesRemaining"></h2>
 						<h2 id="winCount"></h2>
@@ -93,6 +92,8 @@
 		var newLetterGuessed = true;
 		var gamePanelTitle = "Press any key to get started!";
 		var event;
+		var correctLetterCount = 0;
+		var imageName = "";
 
 		var flowerArray = ["ageratum","amaranth","amaryllis","anemomes","astrantia","callalily","carnation","chrysanthemum","columbine","cornflower","daffodil","foxglove","gerberdaisy","gladiolus","goldenrod","hyacinth","laceleaf","lilac","peony","snapdragon","sunflower","tulip"];
 
@@ -111,27 +112,26 @@
 
 			$("#winCount").text("");
 
-    // JavaScript function that wraps everything
-    $(document).ready(function() {
-		
-		//Set up game when any key is pressed			
-		$(document).on("keyup", function(e) {
+			setupgame();	
 
-			setupgame();
+	    // JavaScript function that wraps everything
+	    $(document).ready(function() {
 
 			// Evaluate pressed letter to play
 			$(document).on("keyup", function(event) {
 
-				evaluatepressedkey()
+				gamePanelTitle = "Game On!  Type a letter to guess.";
+				updategamepanel();
+				evaluatepressedkey();
+				checkforwin();
 
 			});//document.onkeyup Any letter to play
-		});//document.onkeyup	Any key to start
-	}); //document ready
+		}); //document ready
 
 
 		function setupgame(){
 			//Generate random flower name
-			randomIndex = 22*Math.floor(Math.random());
+			randomIndex = Math.floor(22*Math.random());
 			flowerName = flowerArray[randomIndex];
 			nameLength = flowerName.length;
 
@@ -148,9 +148,6 @@
 				currentGuessArray[i] = "_";
 				guessedLettersStatus = guessedLettersStatus + " " + currentGuessArray[i];	
 			};				
-
-			gamePanelTitle = "Game On!  Type a letter to guess.";
-			updategamepanel();
 		} //function setupgame
 
 
@@ -170,16 +167,16 @@
 		function checkifletteralreadyguessed(){
 			for (var i = 0; i < guessCount; i++) {
 
-				if(guessedLetter = lettersGuessedArray[i]) {
+				if(guessedLetter === lettersGuessedArray[i]) {
 					alert("You already guessed that letter: " + guessedLetter)
 					newLetterGuessed = false;
 				}
 			} //for
-			if (newLetterGuessed = true) {
+			if (newLetterGuessed === true) {
 					//Add newly guessed letter to lettersGuessedArray
 					lettersGuessedArray[guessCount-1] = guessedLetter;						
 					// Add new letter to currentLettersGuessed string for display
-					currentLettersGuessed = currentLettersGuessed + ", " + guessedLetter;
+					currentLettersGuessed = currentLettersGuessed + " " + guessedLetter;
 				}//  If/else letter not yet guessed so check if correct
 		}//function
 
@@ -187,10 +184,11 @@
 		function evaluatepressedkey(){
 				// Check if a letter key was pressed
 				if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
-console.log("Evaluating pressed key");
+
 					guessedLetter = event.key;
+					
 					//Reset currentLettersGuessed string for display
-					currentLettersGuessed = "";	
+					//currentLettersGuessed = "";	
 
 					checkifletteralreadyguessed()
 
@@ -201,16 +199,17 @@ console.log("Evaluating pressed key");
 						guessesRemaining --;  //decrement guesses remaining
 						//Update currentGuessArray with potential correct letter guess
 						for(var i = 0; i < nameLength; i++) {
-							if(guessedLetter = currentWordArray[t]) {
+							if(guessedLetter === currentWordArray[i]) {
 								//If correct letter guess, then change a "_" to the correctly guessed letter
-								currentGuessArray[t] = guessedLetter;
+								currentGuessArray[i] = guessedLetter;
+								correctLetterCount++;
 							}//If
 						}//for loop checking whether previous letter guess
 
 						for(var i = 0; i < nameLength; i++) {
 							guessedLettersStatus = guessedLettersStatus + " " + currentGuessArray[i];
 						}//for
-							console.log(guessedLettersStatus);
+						
 					} //If
 
 					updategamepanel()	
@@ -221,7 +220,26 @@ console.log("Evaluating pressed key");
 			};   //function evaluatepressedkey
 
 
+			function checkforwin(){
 
+				if(correctLetterCount === nameLength) {
+					winCount++;
+					gamePanelTitle === "You guessed it!!!"
+					imageName === "'./assets/images/" + flowerName + ".jpg'"
+					consolelog(imageName);
+					$(".img-1").attr('src', imageName );
+					$("#imgPanelHeader").text("Correct flower guessed:  " + guessedLettersStatus)
+					updategamepanel();
+				} else if (guessesRemaining ===0 ){
+
+					gamePanelTitle === ""
+						$("#gamePanelTitle").text("Sorry");			
+						$("#currentWordHeader").text("You lost.");				
+						$("#guessedLetters").text("");
+						$("#guessesRemaining").text("");
+						$("#winCount").text("Win Count = " + winCount);
+				} //if
+			}//function
 
 		//LOG YOUR WINS. NUMBER OF TIME USER GETS THE WORD CORRECTLY
 			//VAR numWins =  0;
