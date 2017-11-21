@@ -11,30 +11,20 @@
 
 	<!-- Added a link to Bootstrap-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-
-	<!-- Optional theme -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+	
+	<link rel ="stylesheet" type="text/css" href ="./assets/css/style.css" />
 
     <!-- Added link to the jQuery Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-	<style>
-
-		<link rel="stylesheet" href="./assets/CSS/reset.css">
-	   	<link rel="stylesheet" href="./assets/CSS/style.css">
-
-	</style>
-
 </head>
-
-
 
 
 <body>
 
 <!-- Jumbotron for Title -->
 <div class="jumbotron">
-    <h1 class="text-center">THE HANGMAN GAME: DEATH BY FLOWERS</h1>
+    <h1 class="text-center" id="my-title">THE HANGMAN GAME: DEATH BY FLOWERS</h1>
 
 </div>
 
@@ -42,16 +32,16 @@
 
     <div class="row">
 
-        <!-- Calculator Panel -->
+        <!-- Image Panel -->
         <div class="col-sm-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h2 class="panel-title">Correct Flower:</h2>
+                    <h2 id="imgPanelHeader" class="panel-title panel-title1"></h2>
                 </div>
 
-                <div class="panel-body">
+                <div class="panel-body imagePanel">
                    	
-                   	<img class="img-1" class="img-fluid" src="./assets/images/skullFlower.jpg" class="rounded" alt="Death Flower Image Here" width="350" height="400" align-self="center">
+                   	<img class="img-1 img-fluid rounded" src="./assets/images/skullFlower.jpg" alt="Death Flower Image Here">
                    	
                     
                 </div>
@@ -65,7 +55,7 @@
                 <div class="panel-heading">
                     <h1 id="gamePanelTitle" class="panel-title"></h1>
                 </div>
-                <div class="panel-body">
+                <div class="panel-body gamePanel">
 					<div class="row">
 						<h2 id="currentWordHeader"></h2>
 						<h2 id="currentWord"></h2>
@@ -89,27 +79,30 @@
 		var currentWordHeader = "";
 		var currentWord = "";
 		var currentLettersGuessed = "";
-		var guessedLetters = "";
+		var guessedLettersStatus = "";
+		var guessedLetter = "";
 		var guessesRemaining ="";
+		var guessCount = 0;
 		var winCount = 0;
 		var flowerName = "";
 		var randomIndex = 5;
 		var nameLength = 0;
+		var keyPressed = "";
+		var gameOn = true;
+		var correctGuess = false;
+		var newLetterGuessed = true;
+		var gamePanelTitle = "Press any key to get started!";
+		var event;
 
 		var flowerArray = ["ageratum","amaranth","amaryllis","anemomes","astrantia","callalily","carnation","chrysanthemum","columbine","cornflower","daffodil","foxglove","gerberdaisy","gladiolus","goldenrod","hyacinth","laceleaf","lilac","peony","snapdragon","sunflower","tulip"];
 
-			//for(var i=0; i<22; i++) {
-			//	console.log(flowerArray[i]);
-			//}
-		var currentWordArray = new Array(13);
-		var currentGuessArray = new Array(13);
-		var lettersGuessedArray = new Array(11);
-		var e;
+		var currentWordArray = new Array(); 		//stores the randomly picked flower name
+		var currentGuessArray = new Array(); 		//stores the current user's correct guesses
+		var lettersGuessedArray = new Array();		//stores all the unique letters guessed by the user
 
-		//Initialize game panel
+		//Initialize game panel	
+			$("#gamePanelTitle").text(gamePanelTitle);
 
-			$("#gamePanelTitle").text("Press any key to get started!");
-			
 			$("#currentWordHeader").text("");
 			
 			$("#guessedLetters").text("");
@@ -118,67 +111,118 @@
 
 			$("#winCount").text("");
 
-
-
-		//$(document).ready(function(){
-
-			//$("input").keyup(function(){
-				$('body').keyup(function(e){
-				  console.log('keyup', String.fromCharCode( e.which ));
-				});
-
-			//Start game on any keystroke
-				if(e !== null)	{
-					
-					//Set up game:
-
-					//Generate random flower name
-					randomIndex = Math.floor(22*Math.random());
-					//console.log(randomIndex);
-					flowerName = flowerArray[randomIndex];
-					//console.log(flowerName);
-					nameLength = flowerName.length;
-					//console.log(nameLength);
-
-					//initialize guesses remaining as nameLength -2
-					guessesRemaining = nameLength - 2;
-
-					//load currentWordArray with flowerName
-					for(i=0; i<nameLength; i++){
-						currentWordArray[i] = flowerName.charAt(i);
-						console.log(currentWordArray[i]);
-					}
-
-					//Initialize currentGuessArray
-					for(i=0; i<nameLength; i++){
-						currentGuessArray[i] = "_";
-						//console.log(currentGuessArray[i]);
-						currentLettersGuessed = currentLettersGuessed + " " +currentGuessArray[i];	
-					}				
-					console.log(currentLettersGuessed);
-
-					//Update Game Panel
-					$("#gamePanelTitle").text("Game On!  Type a letter to guess.");
-					
-					$("#currentWordHeader").text("Current Word:");
-					
-					$("#guessedLetters").text(currentLettersGuessed);
-					
-					$("#guessesRemaining").text("Guesses Remaining = " + guessesRemaining);
-
-					$("#winCount").text("Win Count = " + winCount);
-				}	
-			//});
+    // JavaScript function that wraps everything
+    $(document).ready(function() {
 		
+		//Set up game when any key is pressed			
+		$(document).on("keyup", function(e) {
+
+			setupgame();
+
+			// Evaluate pressed letter to play
+			$(document).on("keyup", function(event) {
+
+				evaluatepressedkey()
+
+			});//document.onkeyup Any letter to play
+		});//document.onkeyup	Any key to start
+	}); //document ready
+
+
+		function setupgame(){
+			//Generate random flower name
+			randomIndex = 22*Math.floor(Math.random());
+			flowerName = flowerArray[randomIndex];
+			nameLength = flowerName.length;
+
+			//initialize guesses remaining as nameLength -2
+			guessesRemaining = nameLength + 2;
+
+			//load currentWordArray with flowerName
+			for(i=0; i<nameLength; i++){
+				currentWordArray[i] = flowerName.charAt(i);
+			};
+
+			//Initialize currentGuessArray
+			for(i=0; i<nameLength; i++){
+				currentGuessArray[i] = "_";
+				guessedLettersStatus = guessedLettersStatus + " " + currentGuessArray[i];	
+			};				
+
+			gamePanelTitle = "Game On!  Type a letter to guess.";
+			updategamepanel();
+		} //function setupgame
+
+
+		function updategamepanel(){
+			//Update Game Panel
+
+			console.log(currentLettersGuessed)
+			$("#gamePanelTitle").text(gamePanelTitle);			
+			$("#currentWordHeader").text("Current Word:  " + guessedLettersStatus);				
+			$("#guessedLetters").text("Guessed letters: " + currentLettersGuessed);
+			$("#guessesRemaining").text("Guesses Remaining = " + guessesRemaining);
+			$("#winCount").text("Win Count = " + winCount);
+		} //function
+
+
+		//Check if guessed letter has already been guessed
+		function checkifletteralreadyguessed(){
+			for (var i = 0; i < guessCount; i++) {
+
+				if(guessedLetter = lettersGuessedArray[i]) {
+					alert("You already guessed that letter: " + guessedLetter)
+					newLetterGuessed = false;
+				}
+			} //for
+			if (newLetterGuessed = true) {
+					//Add newly guessed letter to lettersGuessedArray
+					lettersGuessedArray[guessCount-1] = guessedLetter;						
+					// Add new letter to currentLettersGuessed string for display
+					currentLettersGuessed = currentLettersGuessed + ", " + guessedLetter;
+				}//  If/else letter not yet guessed so check if correct
+		}//function
+
+
+		function evaluatepressedkey(){
+				// Check if a letter key was pressed
+				if ((event.keyCode >= 65 && event.keyCode <= 90) || (event.keyCode >= 97 && event.keyCode <= 122)) {
+console.log("Evaluating pressed key");
+					guessedLetter = event.key;
+					//Reset currentLettersGuessed string for display
+					currentLettersGuessed = "";	
+
+					checkifletteralreadyguessed()
+
+					if (newLetterGuessed === true) {
+
+						guessedLettersStatus = "";
+						guessCount++;  //increment guess counter for valid letter guess
+						guessesRemaining --;  //decrement guesses remaining
+						//Update currentGuessArray with potential correct letter guess
+						for(var i = 0; i < nameLength; i++) {
+							if(guessedLetter = currentWordArray[t]) {
+								//If correct letter guess, then change a "_" to the correctly guessed letter
+								currentGuessArray[t] = guessedLetter;
+							}//If
+						}//for loop checking whether previous letter guess
+
+						for(var i = 0; i < nameLength; i++) {
+							guessedLettersStatus = guessedLettersStatus + " " + currentGuessArray[i];
+						}//for
+							console.log(guessedLettersStatus);
+					} //If
+
+					updategamepanel()	
+
+				} else {
+				    alert("Your pressed key '" + event.key +"'' was not a letter.  Please press a letter.");
+			    };   //if		    
+			};   //function evaluatepressedkey
 
 
 
 
-
-		//choose a theme
-		//USE KEY EVENTS FOR LETTERS THE PLYAERS WILL TYPE
-			//USE ON KEYUP EVET LISTENING
-		//PRESS ANY KEY TO GET STARTED
 		//LOG YOUR WINS. NUMBER OF TIME USER GETS THE WORD CORRECTLY
 			//VAR numWins =  0;
 			//numWins++
